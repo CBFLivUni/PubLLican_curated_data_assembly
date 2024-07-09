@@ -8,9 +8,9 @@ import gzip
 import shutil
 
 # get data paths
-data_folder_path = os.path.join("..", "data", "PFalciparum_3d7_test")
-output_json_file_path = os.path.join("..", "output", "PFalciparum_3d7_gaf.json")
-output_tsv_file_path = os.path.join("..", "output", "PFalciparum_3d7_gaf.tsv")
+data_folder_path = os.path.join("..", "data")
+output_json_file_path = os.path.join("..", "output", "merged_gaf.json")
+output_tsv_file_path = os.path.join("..", "output", "merged_gaf.tsv")
 
 # store GAF dataframes in a list
 gaf_dataframes = []
@@ -18,7 +18,7 @@ gaf_dataframes = []
 # function to convert the gaf files to df and add a column for species and strain
 def process_gaf_file(gaf_file, species, strain, filename):
     try:
-        df = pd.read_csv(gaf_file, sep='\t', comment='!', header=None, compression='infer')
+        df = pd.read_csv(gaf_file, sep='\t', low_memory=False,comment='!', header=None, compression='infer')
         # Add species and strain columns
         df['Species'] = species
         df['Strain'] = strain
@@ -33,7 +33,7 @@ def extract_species_and_strain(filename_base):
 
     if match:
         species_strain = match.group(1)
-        capital_indices = [i for i, c in enumerate(species_strain) if c.isupper()]
+        capital_indices = [i for i, c in enumerate(species_strain) if c.isupper() or c.isdigit()]
         if len(capital_indices) >= 2:
             species = f"{species_strain[0]}.{species_strain[1:capital_indices[1]].lower()}"
             strain = species_strain[capital_indices[1]:]
@@ -84,7 +84,7 @@ for root, dirs, files in os.walk(data_folder_path):
             zip_path = os.path.join(root, file)
             process_zip_file(zip_path)
 
-print(gaf_dataframes)
+# print(gaf_dataframes)
 # Check the structure of one of the DataFrames for debugging purposes
 if gaf_dataframes:
     print("Column names and first few rows of one DataFrame for debugging:")
