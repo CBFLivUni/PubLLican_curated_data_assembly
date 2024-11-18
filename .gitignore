@@ -2,3 +2,15 @@
 output/merged_gaf.tsv
 output/merged_gaf.json
 
+/output/pathogens_training_set/species_variation_counts
+*.zip
+*.zip
+*.csv
+*.gz
+*.gaf
+*.json
+*.json
+output/merged_gaf.json
+output/merged_gaf.json
+output/model_species_merged_gaf.tsv
+output/merged_gaf.json

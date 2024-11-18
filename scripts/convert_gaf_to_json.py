@@ -22,6 +22,11 @@ def process_gaf_file(gaf_file, species, strain, filename):
         # Add species and strain columns
         df['Species'] = species
         df['Strain'] = strain
+
+        # TODO:
+        # deal with cases where multiple PMIDs given separated by |
+
+        # deal with cases where GO_REF is provided instead of PMID
         gaf_dataframes.append(df)
     except Exception as e:
         print(f"Failed to read GAF file {filename}: {e}")

@@ -11,12 +11,14 @@ merged_gaf_file = os.path.join(PMIDs_data_dir, "merged_gaf.tsv")
 output_txt_file = os.path.join(PMIDs_data_dir, "unique_pmids_from_curated_dataset.txt")
 
 # read in merged_gaf.tsv column with pubmed IDs as a list
-df = pd.read_csv(merged_gaf_file, sep='\t', comment='!', header=None)
+df = pd.read_csv(merged_gaf_file, sep='\t', header=0, low_memory=False)
+print(df["5"])
+
 
 # PMIDs are in the 6th column (index 5)
-pubmed_ids = df[5].astype(str)  # Convert to string to handle potential float values
+pubmed_ids = df["5"].astype(str)  # Convert to string to handle potential float values
 
-# Remove 'PMID:' prefix and strip whitespace - this was done in prev script but oh well
+# Remove 'PMID:' prefix and strip whitespace
 pubmed_ids = pubmed_ids.str.replace("PMID:", "").str.strip()
 
 # Get unique PMIDs
@@ -35,3 +37,6 @@ with open(output_txt_file, 'w', encoding="UTF-8") as file:
         file.write(f"{pmid}\n")
 
 print(f"Unique PMIDs written to {output_txt_file}")
+
+
+## weird, some are in the format VEuPathDB:SSCA010675; I will need to investigate
